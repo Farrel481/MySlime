@@ -3,20 +3,17 @@ import sys
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QApplication, QLabel, QWidget
 
-
 class Companion(QWidget):
     def __init__(self):
         super().__init__()
-
         self.drag_offset = None
-
         self.setWindowFlags(
-            Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
+            Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint 
         )
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setFixedSize(180, 180)
         self.setCursor(Qt.OpenHandCursor)
-
+        
         blob = QLabel("●", parent=self)
         blob.setStyleSheet("""
             color: #8B5CF6;
@@ -38,9 +35,9 @@ class Companion(QWidget):
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.drag_offset = (
-                event.globalPosition().toPoint()
-                - self.frameGeometry().topLeft()
+                event.globalPosition().toPoint() - self.frameGeometry().topLeft()
             )
+
             self.setCursor(Qt.ClosedHandCursor)
 
     def mouseMoveEvent(self, event):
@@ -53,10 +50,7 @@ class Companion(QWidget):
             self.drag_offset = None
             self.setCursor(Qt.OpenHandCursor)
 
-
 app = QApplication(sys.argv)
-
 companion = Companion()
 companion.show()
-
 sys.exit(app.exec())
