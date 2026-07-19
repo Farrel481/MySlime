@@ -1,0 +1,27 @@
+This project uses Python and PySide6.
+
+The `requirements.txt` file lists every Python package needed to run the project, including the exact versions used during development. This helps everyone install the same dependencies and avoid the “it works on my computer” problem.
+
+> The `.venv` folder is intentionally not uploaded to GitHub because it is large and specific to each computer. Create your own virtual environment, or use .venv then install the packages from `requirements.txt`.
+
+for virtual environment, you can use the following command to install the dependencies:
+
+1. clone this repo
+
+```bash
+py -3.10 -m venv .venv
+```
+then
+```bash
+.\.venv\Scripts\Activate.ps1
+```
+
+if ur terminal block activation 
+```bash
+Set-ExecutionPolicy -Scope Process Bypass
+```
+
+after all that, install requirements
+```bash
+python -m pip install -r requirements.txt
+```
