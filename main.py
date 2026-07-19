@@ -14,20 +14,14 @@ class Companion(QWidget):
         self.setFixedSize(180, 180)
         self.setCursor(Qt.OpenHandCursor)
         
-        blob = QLabel("●", parent=self)
-        blob.setStyleSheet("""
-            color: #8B5CF6;
-            font-size: 130px;
-        """)
+        blob = QLabel("o", parent=self)
+        blob.setStyleSheet("""color: #8B5CF6; font-size: 130px;""")
         blob.setAttribute(Qt.WA_TransparentForMouseEvents)
         blob.adjustSize()
         blob.move(24, 8)
 
         hint = QLabel("Drag me!", parent=self)
-        hint.setStyleSheet("""
-            color: white;
-            font-size: 12px;
-        """)
+        hint.setStyleSheet("""color: white; font-size: 12px;""")
         hint.setAttribute(Qt.WA_TransparentForMouseEvents)
         hint.adjustSize()
         hint.move(58, 145)
