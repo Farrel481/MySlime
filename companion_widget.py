@@ -1,6 +1,8 @@
 import random
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtWidgets import QLabel, QWidget
+from pathlib import Path
+from PySide6.QtGui import QPixmap
 
 class Companion(QWidget):
     def __init__(self):
@@ -29,11 +31,17 @@ class Companion(QWidget):
         self.setFixedSize(180, 180)
         self.setCursor(Qt.OpenHandCursor)
         
-        self.blob = QLabel("o", parent=self)
-        self.blob.setStyleSheet("""color: #8B5CF6; font-size: 130px;""")
-        self.blob.setAttribute(Qt.WA_TransparentForMouseEvents)
-        self.blob.adjustSize()
-        self.blob.move(24, 8)
+        sprite_path = (Path(__file__).parent/"assets"/"sprites"/"cat_idle_1.png")
+        sprite = QPixmap(str(sprite_path)) 
+        if sprite.isNull():
+            raise FileNotFoundError(f"Sprite file not found, error has occured {sprite_path}.")
+        self.blob = QLabel(parent = self)
+        scaled_sprite = sprite.scaled(160, 160, Qt.KeepAspectRatio, Qt.FastTransformation)
+
+        self.blob.setPixmap(scaled_sprite)
+        self.blob.setFixedSize(160, 160)
+        self.blob.setAttributes(Qt.WA_TransparentForMouseEvents)
+        self.blob.move(10, 0)
 
         self.hint = QLabel("Drag me!", parent=self)
         self.hint.setStyleSheet("""color: white; font-size: 12px;""")
