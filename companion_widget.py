@@ -44,6 +44,11 @@ class Companion(QWidget):
         self.animation_timer.setInterval(100)
         self.animation_timer.timeout.connect(self.animate_carried)
 
+        self.idle_step = 0
+        self.idle_timer = QTimer(self)
+        self.idle_timer.setInterval(400)
+        self.idle_timer.timeout.connect(self.animate_idle)
+
     def walk_one_step(self):
         if self.is_carried or self.activity != "walking":
             return
@@ -148,10 +153,24 @@ class Companion(QWidget):
             self.blob.setStyleSheet("""color: #5B3E9D; font-size: 120px;""")
             self.blob.move(24, 18)
             self.hint.setText("...")
+            self.idle_timer.start()
 
         else:
             self.blob.setStyleSheet("""color: #8B5CF6; font-size: 130px;""")
             self.blob.move(24, 8)
             self.hint.setText("Walking...")
+            self.idle_timer.stop()
 
         self.center_hint()
+
+    def animate_idle(self):
+        if self.is_carried or self.activity != "idle":
+            return
+        self.idle_step = (self.idle_step + 1) % 2
+
+        if self.idle_step == 0:
+            self.blob.setStyleSheet("""color: #5B3E9D ;font-size: 120px;""")
+            self.blob.move(24, 18)
+        else:
+            self.blob.setStyleSheet("""color: #6B49B5 ;font-size: 116px;""")
+            self.blob.move(27, 22)
