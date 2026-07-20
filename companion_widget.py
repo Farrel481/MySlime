@@ -1,3 +1,4 @@
+import random
 from PySide6.QtCore import QTimer, Qt
 from PySide6.QtWidgets import QLabel, QWidget
 
@@ -7,6 +8,12 @@ class Companion(QWidget):
         self.drag_offset = None
         self.is_carried = False
         self.bob_step = 0
+
+        self.activity = "walking"
+        self.behavior_timer = QTimer(self)
+        self.behavior_timer.setSingleShot(True)
+        self.behavior_timer.timeout.connect(self.change_activity)
+        self.schedule_next_activity()
 
         self.walk_speed = 3
         self.walk_direction = 1
@@ -38,7 +45,7 @@ class Companion(QWidget):
         self.animation_timer.timeout.connect(self.animate_carried)
 
     def walk_one_step(self):
-        if self.is_carried:
+        if self.is_carried or self.activity != "walking":
             return
         
         current_screen = self.screen()
@@ -79,12 +86,12 @@ class Companion(QWidget):
         if carried:
             self.hint.setText("Hey whachu doin!")
             self.animation_timer.start()
+            self.center_hint()
         else:
-            self.hint.setText("Drag me!")
             self.animation_timer.stop()
-            self.blob.move(24, 8)
+            self.apply_activity_visual()
 
-        self.center_hint()
+        
 
     def animate_carried(self):
         if not self.is_carried:
@@ -116,3 +123,35 @@ class Companion(QWidget):
             self.set_carried(False)
 
         self.land_on_ground()
+
+    def schedule_next_activity(self):
+        if self.activity == "walking":
+            delay = random.randint(3500, 6500)
+        else:
+            delay = random.randint(1500, 3000)
+        self.behavior_timer.start(delay)
+
+    def change_activity(self):
+        if self.is_carried:
+            self.schedule_next_activity()
+            return
+        if self.activity == "walking":
+            self.activity = "idle"
+        else:
+            self.activity = "walking"
+
+        self.apply_activity_visual()
+        self.schedule_next_activity()
+    
+    def apply_activity_visual(self):
+        if self.activity == "idle":
+            self.blob.setStyleSheet("""color: #5B3E9D; font-size: 120px;""")
+            self.blob.move(24, 18)
+            self.hint.setText("...")
+
+        else:
+            self.blob.setStyleSheet("""color: #8B5CF6; font-size: 130px;""")
+            self.blob.move(24, 8)
+            self.hint.setText("Walking...")
+
+        self.center_hint()
