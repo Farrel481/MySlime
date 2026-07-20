@@ -40,7 +40,7 @@ class Companion(QWidget):
 
         self.blob.setPixmap(scaled_sprite)
         self.blob.setFixedSize(160, 160)
-        self.blob.setAttributes(Qt.WA_TransparentForMouseEvents)
+        self.blob.setAttribute(Qt.WA_TransparentForMouseEvents)
         self.blob.move(10, 0)
 
         self.hint = QLabel("Drag me!", parent=self)
